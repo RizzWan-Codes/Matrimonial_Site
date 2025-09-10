@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | VIP Shadi Payamat Center</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+    body {
+      height:100vh; display:flex; justify-content:center; align-items:center;
+      background: linear-gradient(to top left, #5f7e78, #b8d6d0); overflow:hidden;
+    }
+    .container {
+      position:relative; width:300px; height:400px;
+      background: rgba(255,255,255,0.15); backdrop-filter: blur(12px);
+      border-radius:15px; overflow:hidden; box-shadow:0 8px 25px rgba(0,0,0,0.3);
+    }
+    .forms { display:flex; width:200%; height:100%; transition: transform 0.6s ease-in-out; }
+    form {
+      width:50%; height:100%; padding:30px;
+      display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+      overflow-y:auto;
+    }
+    form::-webkit-scrollbar { width:6px; }
+    form::-webkit-scrollbar-thumb { background:#5f7e78; border-radius:3px; }
+    h2 { color:#12372A; margin-bottom:25px; font-weight:700; }
+    input, select {
+      width:100%; padding:10px; margin:10px 0; border:none; outline:none; border-radius:8px;
+      background: rgba(255,255,255,0.9); font-size:14px;
+    }
+    button {
+      width:100%; padding:12px; margin-top:20px; border:none; border-radius:8px;
+      background:#12372A; color:white; font-weight:600; cursor:pointer; transition:0.3s;
+    }
+    button:hover { background:#0d2a1f; }
+    p { margin-top:15px; font-size:14px; color:#333; }
+    span { color:#12372A; font-weight:600; cursor:pointer; }
+    .center-box { display:flex; justify-content:center; align-items:center; height:100%; }
+    @media (max-width: 400px) { .container { width:95%; height:500px; } }
+  </style>
+</head>
+<body>
+  <div class="center-box">
+    <div class="container" id="container">
+      <div class="forms" id="forms">
+
+        <!-- Login Form -->
+        <form id="loginForm">
+          <h2>Login</h2>
+          <input type="email" id="loginEmail" placeholder="Email" required>
+          <input type="password" id="loginPassword" placeholder="Password" required>
+          <button type="submit">Login</button>
+          <p>Don’t have an account? <span onclick="showSignup()">Sign Up</span></p>
+        </form>
+
+        <!-- Signup Form -->
+        <form id="signupForm">
+          <h2>Sign Up</h2>
+          <input type="text" id="signupFullName" placeholder="Full Name" required>
+          <input type="text" id="signupUsername" placeholder="Username" required>
+          <input type="email" id="signupEmail" placeholder="Email" required>
+          <input type="password" id="signupPassword" placeholder="Password" required>
+          <input type="number" id="signupAge" placeholder="Age" required>
+          <select id="signupGender" required>
+            <option value="">Select Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+          <input type="date" id="signupDob" placeholder="Date of Birth" required>
+          <input type="number" id="signupWeight" placeholder="Weight (kg)" required>
+          <input type="number" id="signupHeight" placeholder="Height (cm)" required>
+          <input type="tel" id="PhoneNumber" placeholder="Phone Number" required>
+          <button type="submit">Sign Up</button>
+          <p>Already have an account? <span onclick="showLogin()">Login</span></p>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase JS -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script>
+    const forms = document.getElementById('forms');
+    function showSignup() { forms.style.transform = "translateX(-50%)"; }
+    function showLogin() { forms.style.transform = "translateX(0%)"; }
+
+    // Supabase constants - replace with your actual project details
+    const ConstantSuperBaseURL = "https://dnymgiioijaccnacjnim.supabase.co";
+    const ConstantSuperBaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRueW1naWlvaWphY2NuYWNqbmltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczNTE5MTksImV4cCI6MjA3MjkyNzkxOX0.Th1mABwrHXfcgxILXtVTkp1xE2KDwBrkK_P8U5eRlV0";
+    const supabase = window.supabase.createClient(ConstantSuperBaseURL, ConstantSuperBaseAnonKey);
+
+    // Signup handler
+    document.getElementById("signupForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const full_name = document.getElementById("signupFullName").value;
+      const username = document.getElementById("signupUsername").value;
+      const email = document.getElementById("signupEmail").value;
+      const password = document.getElementById("signupPassword").value;
+      const age = parseInt(document.getElementById("signupAge").value);
+      const gender = document.getElementById("signupGender").value;
+      const dob = document.getElementById("signupDob").value;
+      const weight = parseFloat(document.getElementById("signupWeight").value);
+      const height = parseFloat(document.getElementById("signupHeight").value);
+      const phoneNumber = document.getElementById('PhoneNumber').value.trim();
+
+      const { data: authData, error: authError } = await supabase.auth.signUp({ email, password });
+
+      if (authError) {
+        alert("Error: " + authError.message);
+        return;
+      }
+
+      const { data, error } = await supabase.from('users').insert([{
+        id: authData.user.id,
+        full_name, username, email, age, gender, dob, weight, height, phoneNumber
+      }]);
+
+      if (error) {
+        alert("Error saving user data: " + error.message);
+      } else {
+        alert("Signup successful! Please check your email to confirm your account before logging in.");
+        showLogin();
+      }
+    });
+
+    // Login handler
+    
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      alert("Login error: " + error.message);
+    } else {
+      // Optional: store user info
+      const user = data?.user || (await supabase.auth.getUser()).data.user;
+      sessionStorage.setItem("userId", user.id);
+      sessionStorage.setItem("email", user.email);
+
+      // ✅ Redirect to dashboard.html
+      window.location.href = "dashboard.html";
+    }
+  });
+
+    // Handle Supabase redirect with access_token
+    window.addEventListener("load", async () => {
+      const hash = window.location.hash;
+      if (hash.includes("access_token")) {
+        const params = new URLSearchParams(hash.slice(1));
+        const access_token = params.get("access_token");
+        const refresh_token = params.get("refresh_token");
+
+        const { data, error } = await supabase.auth.setSession({ access_token, refresh_token });
+
+        if (error) {
+          alert("Session error: " + error.message);
+        } else {
+          const user = data?.user || (await supabase.auth.getUser()).data.user;
+
+          sessionStorage.setItem("userId", user.id);
+          sessionStorage.setItem("email", user.email);
+
+          history.replaceState(null, "", window.location.pathname + window.location.search);
+          window.location.href = "dashboard.html";
+        }
+      }
+    });
+  </script>
+</body>
+</html>

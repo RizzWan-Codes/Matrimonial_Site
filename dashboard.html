@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(rgb(183, 213, 207), rgb(95, 126, 120));
+      color: #333;
+      text-align: center;
+    }
+    header {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      border-bottom: 2px solid #ccc;
+    }
+    iframe {
+      margin: 20px auto;
+      display: block;
+      border-radius: 12px;
+      border: none;
+      width: 80%;
+      height: 800px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      
+    }
+    .logout-btn {
+      margin: 15px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #5f7e78;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .logout-btn:hover {
+      background: #3d4f4a;
+    }
+  </style>
+</head>
+<body>
+  <header id="welcome-message">Welcome To VIP Shadi Payamat Center</header>
+  <h1>Enter Your Biodata</h1>  
+  <!-- Google Form Embed -->
+  <iframe src="https://forms.gle/QDSnUFA7RLb34SFw5">
+    Loading…
+  </iframe>
+
+  
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIP Shadi Payamat Center</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #047857; /* Islamic green */
+      --accent: #f59e0b;  /* golden */
+      --light: #fdfdfd;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    html, body { scroll-behavior: smooth; }
+    body { overflow-x: hidden; }
+
+    /* NAVBAR */
+    header {
+      position: fixed; top: 0; left: 0; width: 100%;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(6px);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 2rem; z-index: 1000;
+    }
+    header h1 { color: var(--primary); font-size: 1.3rem; font-weight: 700; }
+    nav { display: flex; align-items: center; }
+    nav a {
+      margin-left: 1.2rem; text-decoration: none; color: #111;
+      font-weight: 600; transition: 0.3s;
+    }
+    nav a:hover { color: var(--accent); }
+    .login-link {
+      background: var(--primary); color: white !important;
+      padding: 0.6rem 1.2rem; border-radius: 20px;
+    }
+    .login-link:hover { background: var(--accent); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+    .hamburger span {
+      width: 25px; height: 3px;
+      background: #111;
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+
+    /* Mobile nav menu */
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      position: fixed;
+      top: 70px; right: 0;
+      width: 60%;
+      background: white;
+      box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+      padding: 1rem;
+      z-index: 999;
+    }
+    .mobile-nav a {
+      margin: 1rem 0;
+      text-decoration: none;
+      color: #111;
+      font-weight: 600;
+    }
+    .mobile-nav a:hover { color: var(--accent); }
+
+    /* Animation for hamburger toggle */
+    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+    /* SECTIONS */
+    section {
+      height: 100vh;
+      display: flex; justify-content: center; align-items: center;
+      text-align: center; color: white; padding: 2rem;
+      background-size: cover; background-position: center;
+      position: relative;
+      opacity: 0; transform: translateY(50px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    section::before {
+      content: ""; position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.55); /* dark overlay */
+      z-index: 0;
+    }
+    section > div {
+      position: relative; z-index: 1; max-width: 900px;
+    }
+    section.show { opacity: 1; transform: translateY(0); }
+    section h2 { font-size: 3rem; font-weight: 700; margin-bottom: 1rem; }
+    section p { font-size: 1.2rem; line-height: 1.8; margin-bottom: 1rem; }
+    ul { list-style: none; padding: 0; }
+    ul li::before { content: "✔ "; color: var(--accent); }
+    ul li { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .btn {
+      background: var(--primary); color: white;
+      padding: 0.8rem 1.5rem; border: none; border-radius: 30px;
+      cursor: pointer; font-weight: 600; margin-top: 1rem; transition: 0.3s;
+    }
+    .btn:hover { background: var(--accent); transform: scale(1.05); }
+
+    /* GOOGLE IMAGE BACKGROUNDS */
+    #home { background-image: url("https://images.pexels.com/photos/30608517/pexels-photo-30608517/free-photo-of-elegant-muslim-wedding-couple-by-window.jpeg"); }
+    #about { background-image: url("https://www.theknot.com/tk-media/images/3b6cc100-f11e-11ee-8f68-212bc8b0c810~rs_1458.h?quality=60"); }
+    #services { background-image: url("https://images.unsplash.com/photo-1644337111604-aa1816b542a1?fm=jpg&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8bXVzbGltJTIwd2VkZGluZ3xlbnwwfHwwfHx8MA%3D%3D&ixlib=rb-4.1.0&q=60&w=3000"); }
+    #stories { background-image: url("https://images.pexels.com/photos/30548502/pexels-photo-30548502.jpeg"); }
+    #values { background-image: url("https://inspirestudios.ltd/wp-content/uploads/2025/05/Valentines-Park-Muslim-Wedding-Photoshoots-700x467.jpg"); }
+    #contact { background-image: url("https://cdn.pixabay.com/photo/2023/05/30/10/18/wedding-8028163_1280.jpg"); }
+
+    @media(max-width: 768px) {
+      nav { display: none; }
+      .hamburger { display: flex; }
+      section h2 { font-size: 2rem; }
+      section p { font-size: 1rem; }
+    }
+
+
+    #chatbot-toggle {
+    position: fixed;
+    bottom: 25px; right: 25px;
+    background: var(--primary);
+    color: white;
+    font-size: 22px;
+    padding: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 1100;
+    transition: 0.3s;
+  }
+  #chatbot-toggle:hover { background: var(--accent); transform: scale(1.1); }
+
+  /* Chatbot Window */
+  #chatbot-container {
+    position: fixed;
+    bottom: 90px; right: 25px;
+    width: 350px; height: 500px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1200;
+  }
+
+  #chatbot-header {
+    background: var(--primary);
+    color: white;
+    padding: 10px 15px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  #chatbot-header h3 { margin: 0; font-size: 16px; }
+  #chatbot-header span { cursor: pointer; font-size: 20px; }
+
+  #chat {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #f9f9f9;
+  }
+
+  .message {
+    margin: 8px 0;
+    padding: 10px 14px;
+    border-radius: 15px;
+    max-width: 80%;
+    line-height: 1.4;
+  }
+  .user {
+    background: var(--primary);
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 4px;
+  }
+  .bot {
+    background: #e5e7eb;
+    color: #111;
+    margin-right: auto;
+    border-bottom-left-radius: 4px;
+  }
+
+  #input-area {
+    display: flex;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    background: #fff;
+  }
+  #input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+  }
+  #send-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0 14px;
+    margin-left: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  #send-btn:hover { background: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header>
+    <h1>☪ VIP Shadi Payamat</h1>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#stories">Stories</a>
+      <a href="#values">Our Values</a>
+      <a href="#contact">Contact</a>
+      <a href="login.html" class="login-link">Login / Signup</a>
+    </nav>
+
+    <!-- Hamburger for mobile -->
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+
+  <!-- Mobile nav -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#stories">Stories</a>
+    <a href="#values">Our Values</a>
+    <a href="#contact">Contact</a>
+    <a href="login.html" class="login-link">Login / Signup</a>
+  </div>
+
+  <!-- SECTION 1 -->
+  <section id="home">
+    <div>
+      <h2>Find Your Halal Partner</h2>
+      <p>Welcome to VIP Shadi Payamat Center, the trusted destination for Muslim brothers and sisters looking for a halal, faith-based, and respectful way to find their soulmate. Marriage is half of faith, and we’re here to make that journey easier, safer, and more meaningful.</p>
+      <button class="btn">Start Your Journey</button>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section id="about">
+    <div>
+      <h2>About Us</h2>
+      <p>Founded with Islamic values at its heart, VIP Shadi Payamat Center provides a safe matrimonial environment, free from unnecessary exposure and fully aligned with halal practices. We understand the importance of privacy, dignity, and family involvement in this sacred journey.</p>
+      <ul>
+        <li>Respectful matchmaking</li>
+        <li>Guided by Sharia principles</li>
+        <li>Privacy and integrity guaranteed</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section id="services">
+    <div>
+      <h2>Our Services</h2>
+      <p>We offer a variety of trusted services for the Muslim community:</p>
+      <ul>
+        <li>Verified profiles with complete authenticity checks</li>
+        <li>Strict privacy and confidentiality policies</li>
+        <li>Guidance for families to connect with suitable matches</li>
+        <li>Halal communication system between matches</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section id="stories">
+    <div>
+      <h2>Success Stories</h2>
+      <p>Alhamdulillah, countless couples have found their life partners through VIP Shadi Payamat Center. These success stories are a testament to the sincerity and trust we build:</p>
+      <ul>
+        <li>"We found each other in a halal way. JazakAllah Khair!" – Ahmed & Ayesha</li>
+        <li>"Finally, a matrimonial site that respects Islamic values." – Fatima</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section id="values">
+    <div>
+      <h2>Our Values</h2>
+      <p>Our work is deeply rooted in Islamic values, ensuring that every step of this journey remains halal, safe, and guided by faith.</p>
+      <ul>
+        <li>Privacy • Dignity • Integrity</li>
+        <li>Family involvement encouraged</li>
+        <li>Faith before everything else</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section id="contact">
+    <div>
+      <h2>Contact Us</h2>
+      <p>Get in touch with us today and take the first step toward your nikah journey.</p>
+      <ul>
+        <li>Email: info@vipshadipayamat.com</li>
+        <li>Phone: +91 98765 43210</li>
+        <li>Location: Lucknow, India</li>
+      </ul>
+      <button class="btn">Get In Touch</button>
+    </div>
+  </section>
+
+  <div id="chatbot-toggle">💬AI</div>
+
+<!-- Chatbot Window -->
+<div id="chatbot-container">
+  <div id="chatbot-header">
+    <h3>🤖 vip.ai</h3>
+    <span id="chatbot-close">&times;</span>
+  </div>
+  <div id="chat"></div>
+  <div id="input-area">
+    <input type="text" id="input" placeholder="Type your message..." />
+    <button id="send-btn">Send</button>
+  </div>
+</div>
+
+
+  <script>
+    // Scroll fade-in
+    const sections = document.querySelectorAll("section");
+    window.addEventListener("scroll", () => {
+      const triggerBottom = window.innerHeight * 0.85;
+      sections.forEach(sec => {
+        const boxTop = sec.getBoundingClientRect().top;
+        if(boxTop < triggerBottom) sec.classList.add("show");
+      });
+    });
+
+    // Mobile nav toggle
+    const hamburger = document.getElementById("hamburger");
+    const mobileNav = document.getElementById("mobileNav");
+
+    hamburger.addEventListener("click", () => {
+      hamburger.classList.toggle("active");
+      mobileNav.style.display = mobileNav.style.display === "flex" ? "none" : "flex";
+    });
+
+    // Close mobile nav on link click
+    document.querySelectorAll(".mobile-nav a").forEach(link => {
+      link.addEventListener("click", () => {
+        mobileNav.style.display = "none";
+        hamburger.classList.remove("active");
+      });
+    });
+
+    const toggleBtn = document.getElementById("chatbot-toggle");
+  const chatbot = document.getElementById("chatbot-container");
+  const closeBtn = document.getElementById("chatbot-close");
+  const input = document.getElementById("input");
+  const chat = document.getElementById("chat");
+
+  toggleBtn.addEventListener("click", () => chatbot.style.display = "flex");
+  closeBtn.addEventListener("click", () => chatbot.style.display = "none");
+
+  async function sendMessage() {
+    const message = input.value.trim();
+    if (!message) return;
+
+    chat.innerHTML += `<div class="message user">${message}</div>`;
+    input.value = "";
+    chat.scrollTop = chat.scrollHeight;
+
+    const res = await fetch("http://localhost:5000/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message })
+    });
+    const data = await res.json();
+
+    chat.innerHTML += `<div class="message bot">${data.reply}</div>`;
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  document.getElementById("send-btn").addEventListener("click", sendMessage);
+  input.addEventListener("keypress", e => {
+    if (e.key === "Enter") sendMessage();
+  });
+  </script>
+</body>
+</html>

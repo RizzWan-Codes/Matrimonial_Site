@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node server.js"
+    "start": "node script.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

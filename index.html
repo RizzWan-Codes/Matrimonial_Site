@@ -213,6 +213,54 @@
     transition: 0.2s;
   }
   #send-btn:hover { background: var(--accent); }
+
+  /* Background video styling */
+#home .bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0; /* Behind content */
+}
+
+/* Ensure content stays on top */
+#home > div {
+  position: relative;
+  z-index: 1;
+}
+
+/* Optional: dark overlay on video for readability */
+#home::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.55); /* keeps your overlay dark */
+  z-index: 0;
+}
+
+/* Common styling */
+#home .bg-video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Show desktop, hide mobile by default */
+.desktop-video { display: block; }
+.mobile-video { display: none; }
+
+/* Mobile styles */
+@media(max-width: 768px) {
+  .desktop-video { display: none; }
+  .mobile-video { display: block; }
+}
+
+
   </style>
 </head>
 <body>
@@ -250,13 +298,19 @@
   </div>
 
   <!-- SECTION 1 -->
-  <section id="home">
-    <div>
-      <h2>Find Your Halal Partner</h2>
-      <p>Welcome to VIP Shadi Payamat Center, the trusted destination for Muslim brothers and sisters looking for a halal, faith-based, and respectful way to find their soulmate. Marriage is half of faith, and we’re here to make that journey easier, safer, and more meaningful.</p>
-      <button class="btn">Start Your Journey</button>
-    </div>
-  </section>
+<section id="home">
+    <video id="desktopVideo" class="bg-video" autoplay loop>
+    <source src="backgroundvid.mp4" type="video/mp4">
+  </video>
+
+  <div>
+    <h2>Find Your Halal Partner</h2>
+    <p>Welcome to VIP Shadi Payamat Center, the trusted destination for Muslim brothers and sisters looking for a halal, faith-based, and respectful way to find their soulmate. Marriage is half of faith, and we’re here to make that journey easier, safer, and more meaningful.</p>
+    <button class="btn">Start Your Journey</button>
+  </div>
+</section>
+
+
 
   <!-- SECTION 2 -->
   <section id="about">
@@ -400,6 +454,7 @@
   input.addEventListener("keypress", e => {
     if (e.key === "Enter") sendMessage();
   });
+
   </script>
 </body>
 </html>

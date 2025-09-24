@@ -299,9 +299,9 @@
 
   <!-- SECTION 1 -->
 <section id="home">
-    <video id="desktopVideo" class="bg-video" autoplay loop>
-    <source src="backgroundvid.mp4" type="video/mp4">
-  </video>
+    <video id="desktopVideo" class="bg-video" autoplay loop muted playsinline>
+  <source src="backgroundvid.mp4" type="video/mp4">
+</video>
 
   <div>
     <h2>Find Your Halal Partner</h2>
@@ -454,6 +454,17 @@
   input.addEventListener("keypress", e => {
     if (e.key === "Enter") sendMessage();
   });
+
+  const video = document.getElementById("desktopVideo");
+let played = false;
+
+window.addEventListener("scroll", () => {
+  if (!played) {
+    video.muted = false;       // unmute
+    video.play();              // play with audio
+    played = true;             // ensure this runs only once
+  }
+});
 
   </script>
 </body>
